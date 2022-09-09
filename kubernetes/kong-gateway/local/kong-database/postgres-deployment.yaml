@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-deployment
+  template:
+    metadata:
+      labels:
+        name: postgres-deployment
+        app: postgres-deployment
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.4
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "kong"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "mysecretpassword"

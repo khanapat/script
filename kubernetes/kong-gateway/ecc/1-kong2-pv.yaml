@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kong-pg-pv
+spec:
+  capacity:
+    storage: 1Gi
+  storageClassName: kong-pg-data
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - hard
+    - nfsvers=4.0
+  nfs:
+    server: 10.9.211.10
+    path: /NMOF/kong-pg/data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kong-ecc-pv
+spec:
+  capacity:
+    storage: 1Gi
+  storageClassName: kong-ecc-data
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - hard
+    - nfsvers=4.0
+  nfs:
+    server: 10.9.211.10
+    path: /NMOF/kong-indy/data

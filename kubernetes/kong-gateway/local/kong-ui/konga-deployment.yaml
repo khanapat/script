@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: konga-deployment
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: konga-deployment
+  template:
+    metadata:
+      labels:
+        name: konga-deployment
+        app: konga-deployment
+    spec:
+      containers:
+      - name: konga
+        image: pantsel/konga:0.14.7
+        imagePullPolicy: IfNotPresent
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        env:
+        - name: TOKEN_SECRET
+          value: P@ssw0rd
+        - name: DB_ADAPTER
+          value: postgres
+        - name: DB_HOST
+          value: postgres-service.test.svc.cluster.local
+        - name: DB_PORT
+          value: "5432"
+        # - name: DB_USER
+        #   value: konga
+        # - name: DB_PASSWORD
+        #   value: passw0rd
+        - name: DB_DATABASE
+          value: konga
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-db-credential
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-db-credential
+              key: password
+        - name: NODE_ENV
+          value: production
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}

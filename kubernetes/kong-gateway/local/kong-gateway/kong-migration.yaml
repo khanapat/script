@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kong-migration
+  namespace: test
+spec:
+  template:
+    metadata:
+      name: kong-migration
+    spec:
+      containers:
+      - name: kong-migration
+        image: kong:2.1-alpine
+        env:
+          - name: KONG_NGINX_DAEMON
+            value: 'off'
+          - name: KONG_DATABASE
+            value: postgres
+          - name: KONG_PG_HOST
+            value: "postgres-service.test.svc.cluster.local"
+          - name: KONG_PG_PORT
+            value: "5432"
+          - name: KONG_PG_SSL
+            value: "off"
+          - name: KONG_PG_SSL_VERIFY
+            value: "off"
+          - name: KONG_PG_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-db-credential
+                key: username
+          - name: KONG_PG_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-db-credential
+                key: password
+        command: [ "/bin/sh", "-c", "kong migrations bootstrap" ]
+      restartPolicy: Never

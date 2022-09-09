@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kong-pg-pv
+  namespace: test
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /Users/ktb_user/Desktop/kubernetes/kong/local/data-pg
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kong-gw-pv
+  namespace: test
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /Users/ktb_user/Desktop/kubernetes/kong/local/data-gw

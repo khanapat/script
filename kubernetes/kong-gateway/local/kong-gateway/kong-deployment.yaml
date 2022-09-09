@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kong-deployment
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kong-deployment
+  template:
+    metadata:
+      labels:
+        name: kong-deployment
+        app: kong-deployment
+    spec:
+      containers:
+        - name: kong
+          image: kong:2.1-alpine  
+          # command: ["/bin/sh", "-c", "kong migrations bootstrap"]
+          env:
+            - name: KONG_ADMIN_LISTEN
+              value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+            - name: KONG_PG_HOST
+              value: "postgres-service.test.svc.cluster.local"
+            - name: KONG_PG_PORT
+              value: "5432"
+            - name: KONG_PG_SSL
+              value: "off"
+            - name: KONG_PG_SSL_VERIFY
+              value: "off"
+            - name: KONG_PROXY_ERROR_LOG
+              value: "/dev/stderr"
+            - name: KONG_ADMIN_ERROR_LOG
+              value: "/dev/stderr"
+            - name: KONG_PLUGINS
+              value: "bundled"
+            - name: KONG_LOG_LEVEL
+              value: "error"
+            - name: KONG_PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-db-credential
+                  key: username
+            - name: KONG_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-db-credential
+                  key: password
+            # - name: KONG_SSL_CERT
+            #   value: "/usr/local/kong/ssl/blockchain_uat.crt"
+            # - name: KONG_SSL_CERT_KEY
+            #   value: "/usr/local/kong/ssl/blockchain_uat.key"
+          readinessProbe:
+            exec:
+              command:
+                - kong
+                - health
+            initialDelaySeconds: 5
+          ports:
+            - name: kong-admin
+              containerPort: 8001
+              protocol: TCP
+            - name: kong-proxy
+              containerPort: 8000
+              protocol: TCP
+            - name: kong-proxy-ssl
+              containerPort: 8443
+              protocol: TCP
+            - name: kong-admin-ssl
+              containerPort: 8444
+              protocol: TCP
+      #     volumeMounts:
+      #       - name: kong-data
+      #         mountPath: /usr/local/kong/ssl/
+      # volumes:
+      #   - name: kong-data
+      #     persistentVolumeClaim:
+      #       claimName: kong-gw-pvc
+          # hostPath:
+          #   path: /Users/ktb_user/Desktop/kubernetes/kong/local/

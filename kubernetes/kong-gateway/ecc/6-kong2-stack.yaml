@@ -1,0 +1,176 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kong2
+  namespace: kong-ecc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kong2
+  template:
+    metadata:
+      labels:
+        name: kong2
+        app: kong2
+    spec:
+      containers:
+        - name: postgres
+          image: kcskbcnd93.kcs:5000/kong-stack/postgres:10.4
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+        - name: kong2
+          image: kcskbcnd93.kcs:5000/kong-stack/kong:2.1-alpine  
+          #command: ["/bin/sh", "-c", "kong migrations bootstrap"]
+          env:
+            - name: KONG_ADMIN_LISTEN
+              value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+            - name: KONG_PG_HOST
+              value: "localhost"
+            - name: KONG_PG_PORT
+              value: "5432"
+            - name: KONG_PG_SSL
+              value: "off"
+            - name: KONG_PG_SSL_VERIFY
+              value: "off"
+            - name: KONG_PROXY_ERROR_LOG
+              value: "/dev/stderr"
+            - name: KONG_ADMIN_ERROR_LOG
+              value: "/dev/stderr"
+            - name: KONG_PLUGINS
+              value: "bundled"
+            - name: KONG_LOG_LEVEL
+              value: "error"
+            - name: KONG_PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-db-credential
+                  key: username
+            - name: KONG_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-db-credential
+                  key: password
+            - name: KONG_SSL_CERT
+              value: "/usr/local/kong/ssl/blockchain_uat.crt"
+            - name: KONG_SSL_CERT_KEY
+              value: "/usr/local/kong/ssl/blockchain_uat.key"
+          readinessProbe:
+            exec:
+              command:
+                - kong
+                - health
+            initialDelaySeconds: 5
+          ports:
+            - name: kong2-admin
+              containerPort: 8001
+              protocol: TCP
+            - name: kong2-proxy
+              containerPort: 8000
+              protocol: TCP
+            - name: kong2-proxy-ssl
+              containerPort: 8443
+              protocol: TCP
+            - name: kong2-admin-ssl
+              containerPort: 8444
+              protocol: TCP
+          volumeMounts:
+            - name: kong-data
+              mountPath: /usr/local/kong/ssl/
+      volumes:
+        - name: kong-data
+          persistentVolumeClaim:
+            claimName: kong-ecc-pvc
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: kong-pg-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong2-admin
+  namespace: kong-ecc
+spec:
+  externalIPs:
+  - 10.9.211.106
+  - 10.9.211.107
+  - 10.9.211.193
+  ports:
+    - name: kong2-admin
+      port: 18001
+      protocol: TCP
+      targetPort: 8001
+  selector:
+    app: kong2
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 0.0.0.0/0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong2-admin-ssl
+  namespace: kong-ecc
+spec:
+  externalIPs:
+  - 10.9.211.106
+  - 10.9.211.107
+  - 10.9.211.193
+  ports:
+    - name: kong2-admin-ssl
+      port: 18444
+      protocol: TCP
+      targetPort: 8444
+  selector:
+    app: kong2
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 0.0.0.0/0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong2-proxy
+  namespace: kong-ecc
+spec:
+  externalIPs:
+  - 10.9.211.106
+  - 10.9.211.107
+  - 10.9.211.193
+  ports:
+    - name: kong2-proxy
+      port: 18000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: kong2
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 0.0.0.0/0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong2-proxy-ssl
+  namespace: kong-ecc
+spec:
+  externalIPs:
+  - 10.9.211.106
+  - 10.9.211.107
+  - 10.9.211.193
+  ports:
+    - port: 18443
+      protocol: TCP
+      targetPort: 8443
+  selector:
+    app: kong2
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 0.0.0.0/0
