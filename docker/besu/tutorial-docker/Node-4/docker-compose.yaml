@@ -1,0 +1,32 @@
+version: "3.2"
+services:
+  node2:
+    container_name: node4
+    image: hyperledger/besu:latest
+    environment:
+      - LOG4J_CONFIGURATION_FILE=/opt/besu/config/log-config.xml
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        /opt/besu/bin/besu \
+        --config-file=/opt/besu/config/config.toml \
+        --bootnodes="${BOOTNODE1_ENODE}" \
+    volumes:
+      - ${PWD}/data:/opt/besu/data
+      - ${PWD}/config:/opt/besu/config
+      - ${PWD}/logs:/tmp/besu
+    ports:
+      - 30306:30306 #  expose port : internal port
+      - 8548:8548
+    networks:
+      besu:
+        ipv4_address: 172.24.2.5
+
+networks:
+  besu:
+    name: besu
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

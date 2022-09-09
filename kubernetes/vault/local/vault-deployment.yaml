@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trust-vault-test-deployment
+  labels:
+    app: trust-vault-test-deployment-label
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trust-vault-test-deployment
+  template:
+    metadata:
+      labels:
+        app: trust-vault-test-deployment
+    spec:
+      initContainers:
+      - name: init
+        image: busybox:1.28
+        command: ['sh', '-c', 'mkdir /vault/config; mkdir /vault/data']
+        volumeMounts:
+        - name: trust-vault-test-data
+          mountPath: /vault-trust
+      containers:
+      - name: trust-vault-test-deployment
+        image: vault:1.5.5
+        resources:
+          requests:
+            ephemeral-storage: 1G
+          limits:
+            ephemeral-storage: 1G
+        imagePullPolicy: Always
+        args: ["server"]
+        # readinessProbe:
+        #   exec:
+        #    command:
+        #     - sh
+        #     - -c
+        #     - "vault operator unseal 2fd63155cc77d965a046cb8ceb433bba4d5da8becb5f0f76a49bf429a45e1f8c52 && vault operator unseal 808097073b1e8a76e5cac983e8cf502d5194492a9fccff02af40926ef10f256899"
+        ports:
+        - containerPort: 8200
+        securityContext:
+          capabilities:
+            add: ["IPC_LOCK"]
+        env:
+          - name: VAULT_ADDR
+            value: "http://localhost:8200"
+          - name: VAULT_LOCAL_CONFIG
+            value: |             
+              storage "file" {
+                path     = "/vault-trust/data"
+              }
+             
+                listener "tcp" {
+                  address = "0.0.0.0:8200"
+                  tls_disable = 1
+                }
+              disable_sealwrap = true
+              ui = true
+        volumeMounts:
+        - name: trust-vault-test-data
+          mountPath: /vault-trust
+      volumes:
+      - name: trust-vault-test-data
+        # persistentVolumeClaim:
+        #   claimName: trust-vault-test-pvc
+        hostPath:
+          path: /Users/ktb_user/Desktop/kubernetes/vault/local/
+

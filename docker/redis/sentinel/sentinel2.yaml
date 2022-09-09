@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  fix-redis-volume-ownership:
+    container_name: fix-redis-volume-ownership
+    image: 'bitnami/redis:latest'
+    user: root
+    command: chown -R 1001:1001 /bitnami
+    volumes:
+      - ${PWD}/redis-data:/bitnami/redis/data
+
+  redis-2:
+    container_name: redis-2
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=10.9.211.110
+      - REDIS_MASTER_PASSWORD=strong_password
+      - REDIS_PASSWORD=strong_password
+    network_mode: "host"
+    volumes:
+      - ${PWD}/redis-data:/bitnami/redis/data
+    depends_on:
+      - fix-redis-volume-ownership
+
+  redis-sentinel:
+    container_name: redis-sentinel-2
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_MASTER_HOST=10.9.211.110
+      - REDIS_MASTER_PASSWORD=strong_password
+      - REDIS_MASTER_SET=master
+    depends_on:
+      - redis-2
+    network_mode: "host"

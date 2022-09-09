@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  node:
+    container_name: node
+    image: hyperledger/besu:latest
+    environment:
+    # default
+      - BESU_NETWORK=dev
+    # RPC
+      - BESU_RPC_HTTP_ENABLED=true
+      - BESU_RPC_HTTP_CORS_ORIGINS=*
+      - BESU_HOST_ALLOWLIST=*
+    # miner
+      - BESU_MINER_ENABLED=true
+      - BESU_MINER_COINBASE=0xc083EB69aa7215f4AFa7a22dcbfCC1a33999371C
+    ports:
+      - 8545:8545
+    volumes:
+      - ${PWD}/data:/opt/besu/database

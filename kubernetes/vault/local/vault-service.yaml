@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trust-vault-test-services
+  labels:
+    app: trust-vault-test-services-label
+spec:
+  type: NodePort
+  ports:
+  - port: 8200
+    name: ui
+    targetPort: 8200
+    nodePort: 31234
+  selector:
+    app: trust-vault-test-deployment

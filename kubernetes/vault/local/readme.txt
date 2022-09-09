@@ -1,0 +1,1 @@
+ไม่ต้องขึ้น pv กับ pvc เพราะใน deployment ไม่ใช่ persistentVolumeClaim แต่ใช้ hostPath แทน

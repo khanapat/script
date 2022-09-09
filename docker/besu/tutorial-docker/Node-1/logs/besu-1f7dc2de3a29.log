@@ -1,0 +1,4 @@
+{"timestamp":"2022-09-09T06:54:10,889","container":"1f7dc2de3a29","level":"INFO","thread":"main","class":"Besu","message":"Using the Java implementation of alt bn128","throwable":""}
+{"timestamp":"2022-09-09T06:54:10,892","container":"1f7dc2de3a29","level":"INFO","thread":"main","class":"Besu","message":"Using the native implementation of the signature algorithm","throwable":""}
+{"timestamp":"2022-09-09T06:54:10,897","container":"1f7dc2de3a29","level":"INFO","thread":"main","class":"Besu","message":"Starting Besu version: besu/v22.7.1/linux-aarch_64/openjdk-java-11","throwable":""}
+{"timestamp":"2022-09-09T06:54:11,031","container":"1f7dc2de3a29","level":"WARN","thread":"main","class":"Besu","message":"--min-gas-price has been ignored because --miner-enabled was not defined on the command line.","throwable":""}

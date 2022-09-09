@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mof-vault-services
+  namespace: mof-document
+spec:
+  type: NodePort
+  ports:
+  - port: 8200
+    name: ui
+    targetPort: 8200
+    nodePort: 30044
+  selector:
+    app: mof-vault-deployment

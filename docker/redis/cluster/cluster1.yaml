@@ -1,0 +1,11 @@
+version: '2'
+services:
+  redis1:
+    container_name: redis1
+    image: 'bitnami/redis-cluster:latest'
+    environment:
+      - REDIS_PASSWORD=strong_password
+      - REDIS_REPLICATION_MODE=master
+    network_mode: "host"
+    volumes:
+      - ${PWD}/redis-data:/bitnami/redis/data

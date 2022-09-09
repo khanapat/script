@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpki-vault-deployment
+  namespace: dpki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dpki-vault-deployment
+  template:
+    metadata:
+      labels:
+        app: dpki-vault-deployment
+    spec:
+      containers:
+      - name: dpki-vault-deployment
+        image: kcskbcnd93.kcs:5000/bccommon/vault:1.5.5
+        resources:
+          requests:
+            ephemeral-storage: 1G
+          limits:
+            ephemeral-storage: 1G
+        imagePullPolicy: Always
+        args: ["server"]
+        readinessProbe:
+          exec:
+           command:
+            - sh
+            - -c
+            - "vault operator unseal $VAULT_UNSEAL_KEY1 &&
+             vault operator unseal $VAULT_UNSEAL_KEY2 &&
+             vault operator unseal $VAULT_UNSEAL_KEY3"
+        ports:
+          - containerPort: 8200
+        securityContext:
+          capabilities:
+            add: ["IPC_LOCK"]
+        env:
+          - name: VAULT_ADDR
+            value: "http://localhost:8200"
+          - name: VAULT_LOCAL_CONFIG
+            value: |             
+              storage "file" {
+                path     = "/vault/data"
+              }
+             
+                listener "tcp" {
+                  address = "0.0.0.0:8200"
+                  tls_disable = 1
+                }
+              disable_sealwrap = true
+              ui = true
+          - name: VAULT_UNSEAL_KEY1
+            valueFrom:
+              secretKeyRef:
+                name: dpki-vault-secret
+                key: key1
+          - name: VAULT_UNSEAL_KEY2
+            valueFrom:
+              secretKeyRef:
+                name: dpki-vault-secret
+                key: key2        
+          - name: VAULT_UNSEAL_KEY3
+            valueFrom:
+              secretKeyRef:
+                name: dpki-vault-secret
+                key: key3
+        volumeMounts:
+        - name: dpki-vault-data
+          mountPath: /vault
+      volumes:
+      - name: dpki-vault-data
+        persistentVolumeClaim:
+          claimName: dpki-vault-pvc

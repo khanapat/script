@@ -1,0 +1,10 @@
+version: '2'
+services:
+  kafka-manager:
+    image: sheepkiller/kafka-manager:stable
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zoo1:2181,zoo2:2182,zoo3:2183
+      APPLICATION_SECRET: letmein
+      KM_ARGS: -Djava.net.preferIPv4Stack=true
