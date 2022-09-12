@@ -1,0 +1,54 @@
+{"timestamp":"2022-09-12T04:20:42,023","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Using the Java implementation of alt bn128","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,028","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Using the native implementation of the signature algorithm","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,034","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Starting Besu version: besu/v22.7.1/linux-aarch_64/openjdk-java-11","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,219","container":"mypc","level":"WARN","thread":"main","class":"Besu","message":"--min-gas-price has been ignored because --miner-enabled was not defined on the command line.","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,343","container":"mypc","level":"WARN","thread":"main","class":"Besu","message":"Discovery disabled: bootnodes will be ignored.","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,348","container":"mypc","level":"WARN","thread":"main","class":"Besu","message":"Permissions are disabled. Cannot enable PERM APIs when not using Permissions.","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,351","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Static Nodes file = /opt/besu/config/static-nodes.json","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,380","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Connecting to 5 static nodes.","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,385","container":"mypc","level":"INFO","thread":"main","class":"Besu","message":"Security Module: localfile","throwable":""}
+{"timestamp":"2022-09-12T04:20:42,411","container":"mypc","level":"INFO","thread":"main","class":"RocksDBKeyValueStorageFactory","message":"No existing database detected at /opt/besu/data. Using version 1","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,576","container":"mypc","level":"WARN","thread":"main","class":"Besu","message":"Discovery disabled: bootnodes will be ignored.","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,600","container":"mypc","level":"INFO","thread":"main","class":"KeyPairUtil","message":"Loaded public key 0x8991336ca4e2919979cde17ce2ef3d313e25064f8ebd8e436044f00915617dc7d5387f399e53ab9c6309b735fe5a0f0feeb89c53690456861e4c9fc2cf9d1aeb from /opt/besu/config/key","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,611","container":"mypc","level":"WARN","thread":"main","class":"Besu","message":"Privacy is disabled. Cannot use EEA/PRIV API methods when not using Privacy.","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,692","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,694","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,697","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,698","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,700","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,701","container":"mypc","level":"INFO","thread":"main","class":"AbstractAltBnPrecompiledContract","message":"Native alt bn128 not available","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,727","container":"mypc","level":"INFO","thread":"main","class":"ProtocolScheduleBuilder","message":"Protocol schedule created with milestones: [Berlin: 0]","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,807","container":"mypc","level":"INFO","thread":"main","class":"BesuControllerBuilder","message":"TTD difficulty is not present, creating initial sync phase for PoW","throwable":""}
+{"timestamp":"2022-09-12T04:20:43,837","container":"mypc","level":"INFO","thread":"main","class":"RunnerBuilder","message":"Detecting NAT service.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,191","container":"mypc","level":"INFO","thread":"main","class":"Runner","message":"Starting external services ... ","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,192","container":"mypc","level":"INFO","thread":"main","class":"MetricsHttpService","message":"Starting metrics http service on 0.0.0.0:9545","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,257","container":"mypc","level":"INFO","thread":"main","class":"JsonRpcHttpService","message":"Starting JSON-RPC service on 0.0.0.0:8545","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,257","container":"mypc","level":"INFO","thread":"vert.x-eventloop-thread-3","class":"MetricsHttpService","message":"Metrics service started and listening on 0.0.0.0:9545","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,270","container":"mypc","level":"INFO","thread":"vert.x-eventloop-thread-3","class":"JsonRpcHttpService","message":"JSON-RPC service started and listening on 0.0.0.0:8545","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,272","container":"mypc","level":"INFO","thread":"main","class":"GraphQLHttpService","message":"Starting GraphQL HTTP service on 0.0.0.0:8547","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,277","container":"mypc","level":"INFO","thread":"vert.x-eventloop-thread-3","class":"GraphQLHttpService","message":"GraphQL HTTP service started and listening on 0.0.0.0:8547","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,277","container":"mypc","level":"INFO","thread":"main","class":"WebSocketService","message":"Starting Websocket service on 0.0.0.0:8546","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,284","container":"mypc","level":"INFO","thread":"vert.x-eventloop-thread-3","class":"WebSocketService","message":"Websocket service started and listening on 0.0.0.0:8546","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,286","container":"mypc","level":"INFO","thread":"main","class":"AutoTransactionLogBloomCachingService","message":"Starting auto transaction log bloom caching service.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,292","container":"mypc","level":"INFO","thread":"main","class":"LogBloomCacheMetadata","message":"Lookup cache metadata file in data directory: /opt/besu/data/caches","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,307","container":"mypc","level":"INFO","thread":"main","class":"Runner","message":"Starting Ethereum main loop ... ","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,308","container":"mypc","level":"INFO","thread":"main","class":"DockerNatManager","message":"Starting docker NAT manager.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,364","container":"mypc","level":"INFO","thread":"main","class":"NetworkRunner","message":"Starting Network.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,381","container":"mypc","level":"INFO","thread":"nioEventLoopGroup-2-1","class":"RlpxAgent","message":"P2P RLPx agent started and listening on /0.0.0.0:30303.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,384","container":"mypc","level":"INFO","thread":"main","class":"DefaultP2PNetwork","message":"Enode URL enode://8991336ca4e2919979cde17ce2ef3d313e25064f8ebd8e436044f00915617dc7d5387f399e53ab9c6309b735fe5a0f0feeb89c53690456861e4c9fc2cf9d1aeb@127.0.0.1:30303?discport=0","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,386","container":"mypc","level":"INFO","thread":"main","class":"DefaultP2PNetwork","message":"Node address 0x2ac4b8afeb45b5fcad9cc2f457fea3f9aeafc39b","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,389","container":"mypc","level":"INFO","thread":"main","class":"DefaultSynchronizer","message":"Starting synchronizer.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,393","container":"mypc","level":"INFO","thread":"main","class":"FullSyncDownloader","message":"Starting full sync.","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,394","container":"mypc","level":"INFO","thread":"main","class":"FullSyncTargetManager","message":"No sync target, waiting for peers. Current peers: 0","throwable":""}
+{"timestamp":"2022-09-12T04:20:44,418","container":"mypc","level":"INFO","thread":"main","class":"Runner","message":"Ethereum main loop is up.","throwable":""}
+{"timestamp":"2022-09-12T04:20:49,425","container":"mypc","level":"INFO","thread":"EthScheduler-Timer-0","class":"FullSyncTargetManager","message":"No sync target, waiting for peers. Current peers: 0","throwable":""}
+{"timestamp":"2022-09-12T04:20:54,483","container":"mypc","level":"INFO","thread":"EthScheduler-Timer-0","class":"FullSyncTargetManager","message":"No sync target, waiting for peers. Current peers: 0","throwable":""}
+{"timestamp":"2022-09-12T04:20:59,504","container":"mypc","level":"INFO","thread":"EthScheduler-Timer-0","class":"FullSyncTargetManager","message":"No sync target, waiting for peers. Current peers: 0","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,018","container":"mypc","level":"INFO","thread":"BftProcessorExecutor-IBFT-0","class":"BftProcessor","message":"Shutting down BFT event processor","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,029","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"DefaultSynchronizer","message":"Stopping synchronizer","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,038","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"NetworkRunner","message":"Stopping Network.","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,048","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"EthProtocolManager","message":"Stopping eth Subprotocol.","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,118","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"EthProtocolManager","message":"eth Subprotocol stopped.","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,122","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"NetworkRunner","message":"Network stopped.","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,126","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"AutoTransactionLogBloomCachingService","message":"Shutting down Auto transaction logs caching service.","throwable":""}
+{"timestamp":"2022-09-12T04:21:03,135","container":"mypc","level":"INFO","thread":"BesuCommand-Shutdown-Hook","class":"DockerNatManager","message":"Stopping docker NAT manager.","throwable":""}

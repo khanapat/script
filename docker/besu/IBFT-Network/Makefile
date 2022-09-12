@@ -1,8 +1,15 @@
+HOST_NAME = mypc # $(shell hostname)
+HOST_IP  = 127.0.0.1 # $(shell hostname -I | awk '{print $$1}')
+
 IBFT_CONFIG_FILE_NAME = ibftConfigFile.json
 IBFT_EXIST = $(wildcard $(IBFT_CONFIG_FILE_NAME))
 
 CONTAINERNAME = besunode
 CONTAINER_EXIST = $(shell docker images -q $(CONTAINERNAME) 2> /dev/null)
+
+LOGGING_LEVEL = INFO
+
+NODE_1 = Node-1
 
 KEYS_DIRECTORY = $(sort $(dir $(wildcard networkFiles/keys/*/)))
 
@@ -68,15 +75,36 @@ gen-staticnode:
 	@echo "\"$(BOOTNODE1_ENODE)\"" >> static-nodes.json
 	@echo "]" >> static-nodes.json
 
-val1:
+node1:
 ifneq ($(CONTAINER_EXIST),)
 	@echo "==> $(CONTAINERNAME) was found"
 	@echo "==> Removing existing node"
 endif
 	@echo $(CONTAINER_EXIST)
-	@echo $()
 	@echo "==> Preparing mount folder & configs"
+	@rm -rf "$(NODE_1)"
+	@mkdir "$(NODE_1)"
+	@mkdir "$(NODE_1)/config"
+	@echo "==> copying keys & default static files & genesis.json"
+	@cp "$(VNODE1DIR)key" "./$(NODE_1)/config/key"
+	@cp "$(VNODE1DIR)key.pub" "./$(NODE_1)/config/key.pub"
+	@cp "./networkFiles/genesis.json" "./$(NODE_1)/config/genesis.json"
+	@cp "./template-config/config.toml" "./$(NODE_1)/config/config.toml"
+	@cp "./template-config/log-config.xml" "./$(NODE_1)/config/log-config.xml"
+	@cp "./template-config/static-nodes.json" "./$(NODE_1)/config/static-nodes.json"
+	@cp "./docker-compose-template.yaml" "./$(NODE_1)/docker-compose-node1.yaml"
+	@echo "==> start node1 container"
+	@echo "CONTAINERNAME=$(CONTAINERNAME)" > ./$(NODE_1)/.env
+	@echo "HOST_NAME=$(HOST_NAME)" >> ./$(NODE_1)/.env
+	@echo "HOST_IP=$(HOST_IP)" >> ./$(NODE_1)/.env
+	@echo "LOGGING_LEVEL=$(LOGGING_LEVEL)" >> ./$(NODE_1)/.env
+	@echo "BOOTNODE1_ENODE=$(BOOTNODE1_ENODE)" >> ./$(NODE_1)/.env
+	@echo "BOOTNODE2_ENODE=$(BOOTNODE2_ENODE)" >> ./$(NODE_1)/.env
+# @echo "NODE_MOUNT=$(NODE_1)" >> ./$(NODE_1)/.env
+	@docker-compose -f ./$(NODE_1)/docker-compose-node1.yaml up
 
+node1-stop:
+	@docker-compose -f ./$(NODE_1)/docker-compose-node1.yaml down
 
 info:
 	@echo "  "

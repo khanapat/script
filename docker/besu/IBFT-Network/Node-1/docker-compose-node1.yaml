@@ -1,0 +1,31 @@
+version: '3.2'
+services:
+  bootnode:
+    container_name: ${CONTAINERNAME}
+    hostname: ${HOST_NAME}
+    restart: "on-failure"
+    image: hyperledger/besu:latest
+    environment:
+      - LOG4J_CONFIGURATION_FILE=/opt/besu/config/log-config.xml
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        /opt/besu/bin/besu \
+        --config-file=/opt/besu/config/config.toml \
+        --logging="${LOGGING_LEVEL}" \
+        --bootnodes="${BOOTNODE1_ENODE}" \
+        --p2p-host=${HOST_IP};
+    volumes:
+      - ./data:/opt/besu/data
+      - ./config:/opt/besu/config
+      - ./logs:/tmp/besu
+    ports:
+      - "30303:30303"
+      - "8545:8545"
+      - "8547:8547"
+      - "9545:9545"
+      - "8546:8546"
+    # network_mode: "host"
+    extra_hosts:
+        - "${HOST_NAME}:${HOST_IP}"
