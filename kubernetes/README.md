@@ -1,5 +1,3 @@
-- kind
-
 - metadata
   1. https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
 
@@ -14,6 +12,7 @@ metadata:
 - selector
   1. https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   2. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#writing-a-deployment-spec
+  3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
 ```yaml
 spec:
@@ -42,6 +41,19 @@ spec:
           imagePullPolicy: Always # everytime (efficient)
 
           imagePullPolicy: Never
+
+          livenessProbe/readinessProbe:
+            httpGet:
+              path: /liveness
+              port: 9090
+            initialDelaySeconds: 3 # before liveness are initiated (default 0)
+            periodSeconds: 3 # how often to perform (default 10)
+            timeoutSeconds: 1 # default(1)
+            successThreshold: 1 # must be 1 for liveness (default 1)
+            failureThreshold: 1 # default(3)
+
+
+      terminationGracePeriodSeconds: 60
 
       restartPolicy: Always
 
