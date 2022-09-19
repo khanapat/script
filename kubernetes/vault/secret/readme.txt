@@ -9,3 +9,7 @@ kubectl describe secrets mof-vault-secret -n mof-document
 
 kubectl get secret mof-vault-secret -o yaml -n mof-document
 - check data(base64) in secret
+
+# note
+stringData > no need to encode base64
+data > need to encode base64
