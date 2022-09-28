@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx # name should be the same as project
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tatoonz/kustomize-101.git # repo url
+    targetRevision: develop # branch
+    path: phase-final/overlays/sit # path overlays
+  destination:
+    name: in-cluster # cluster name
+    namespace: sit # namespace
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

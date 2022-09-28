@@ -1,0 +1,23 @@
+resources:
+  - ../../base
+
+replicas:
+  - name: nginx # metadata.name
+    count: 5 # override replicas
+
+images:
+  - name: nginx # image name
+    newName: my-app-uat # override image name
+    newTag: 1.23-alpine # override tag image
+
+configMapGenerator:
+  - name: app-config-env # name configmap
+    behavior: merge # create (new only) | replace (replace all with field below) | merge (edit only field below)
+    literals:
+      - MYSQL_HOST=mysql.uat.host
+
+secretGenerator:
+  - name: app-secret-env # name secret
+    behavior: merge # if no field in template, it will add instead of edit
+    literals:
+      - MYSQL_USER=admin-uat

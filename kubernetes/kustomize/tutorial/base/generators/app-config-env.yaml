@@ -1,0 +1,14 @@
+# usage via generators field
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: app-config-env
+literals: # direct declare
+  - MYSQL-HOST=xxxx
+  - MYSQL-PORT=3306
+envs: # env from config.env
+  - configs/config.env
+files: # java application.yaml file
+  - x.yaml=configs/application.yaml
+# options:
+#   disableNameSuffixHash: true

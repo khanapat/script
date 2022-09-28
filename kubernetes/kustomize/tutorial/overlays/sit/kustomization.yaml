@@ -1,0 +1,19 @@
+resources:
+  - ../../base
+
+images:
+  - name: nginx # image name
+    newName: my-app-sit # override image name
+    newTag: 1.22-alpine # override tag image
+
+configMapGenerator:
+  - name: app-config-env
+    behavior: merge # create (new only) | replace (replace all with field below) | merge (edit only field below)
+    literals:
+      - MYSQL_HOST=mysql.sit.host
+
+secretGenerator:
+  - name: app-secret-env
+    behavior: merge # if no field in template, it will add instead of edit
+    literals:
+      - MYSQL_USER=admin-sit

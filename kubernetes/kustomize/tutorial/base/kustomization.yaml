@@ -1,0 +1,51 @@
+resources:
+  - resources/deployment.yaml
+  - resources/service.yaml
+
+## global option
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+## usage via kustomization.yaml
+configMapGenerator:
+  - name: app-config-env
+    # configmap file
+    literals: # direct declare
+      - MYSQL_HOST=xxxx
+      - MYSQL_PORT=3306
+    envs: # env from config.env
+      - configs/config.env
+    files: # java application.yaml file
+      - x.yaml=configs/application.yaml
+    ## optional
+    # options:
+    #   disableNameSuffixHash: true
+
+  - name: app-config-props
+    files:
+      - configs/application.yaml
+      - application-extras.yaml=configs/more.yaml
+  
+    ## optional
+    # options:
+    #   disableNameSuffixHash: true
+
+secretGenerator: # no need to encode base64 (kustomize will do it)
+  - name: app-secret-env
+    literals:
+      - MYSQL_PASS=password
+    envs:
+      - secrets/secret.env
+  - name: app-secret-files
+    files:
+      - secrets/gcp-sa-key.json
+    ## optional
+    # options:
+    #   disableNameSuffixHash: true
+
+
+## or
+
+## usage via generators field
+# generators:
+#   - generators/app-config-env.yaml

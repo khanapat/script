@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx:1.21-alpine
+          name: nginx
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: app-config-env
+            - secretRef:
+                name: app-secret-env
+          volumeMounts:
+            - name: app-prop-files
+              mountPath: /app/props
+            - name: app-conn-files
+              mountPath: /app/credentials
+      volumes:
+        - name: app-prop-files
+          configMap:
+            name: app-config-props
+        - name: app-conn-files
+          secret:
+            secretName: app-secret-files
