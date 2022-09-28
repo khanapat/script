@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-go-1-configmap
+  namespace: test
+data:
+  config.yaml: |+ # file config
+    APP:
+      NAME: "test-api"
+      PORT: "9090"
+      TIMEOUT: "60s"
+      CONTEXT: "/test"
+    
+    SWAGGER:
+      HOST: "localhost:9090"
+      USER: "admin"
+      PASSWORD: "password"
+    
+    LOG:
+      LEVEL: "debug"
+      ENV: "dev"
+
+    POSTGRES:
+      TYPE: "postgres"
+      HOST: "host.docker.internal"
+      PORT: "5432"
+      USERNAME: "postgres"
+      PASSWORD: "P@ssw0rd"
+      DATABASE: "test"
+      TIMEOUT: 100
+      SSLMODE: "disable"
+      POOL-MAX-CONNS: 10

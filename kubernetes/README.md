@@ -15,7 +15,7 @@ metadata:
   3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
 ```yaml
-spec:
+spec: # deployment.yaml
   replicas: 1 # modify number of pods (default 1)
   strategy:
     type: Recreate # (terminated old and create new)
@@ -121,11 +121,19 @@ spec:
               name: configMap1
               key: DB_URL
 
-        - name: VAULT_JWT_KEY # env kube secret
+        - name: VAULT_JWT_KEY # env kube secret one key
           valueFrom:
             secretKeyRef:
               name: secret1
-              key: jwt_key
+              key: jwt_key # key in secret
+
+      envFrom: # define all of configmap's data as env
+        - configMapRef:
+            name: configMap1
+
+      envFrom: # define all of secretkey's data as env
+        - secretRef:
+            name: secret1
 
       volumeMounts:
         - name: config-volume

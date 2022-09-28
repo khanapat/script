@@ -1,0 +1,21 @@
+version: '2.2'
+services:
+  logstash:
+    image: kcskbcnd93.kcs:5000/logstash/logstash:7.17.2
+    container_name: logstash-poc-kafka
+    restart: always
+    environment:
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx4096"
+      - xpack.monitoring.enabled=false
+    volumes:
+      - ./pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./cert/:/jaasPath
+    ports:
+      - "5100:5000"
+      - "5144:5044"
+    network_mode: "bridge"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1G"
+        max-file: "2"

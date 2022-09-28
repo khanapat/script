@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-go-deployment
+  namespace: test
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: test-go
+  template:
+    metadata:
+      labels:
+        app: test-go
+    spec:
+      containers:
+        - name: test-go-deployment
+          image: test-api:1.0.0
+          imagePullPolicy: IfNotPresent # can't use 'Always' in local
+          
+          # goapp-cm-2.yaml
+          envFrom:
+            - configMapRef:
+                name: test-go-1-configmap
+
+          # goapp-cm-1.yaml
+      #     volumeMounts:
+      #       - name: test-go-1-configmap-volume
+      #         mountPath: /app/config
+      # volumes:
+      #   - name: test-go-1-configmap-volume
+      #     configMap:
+      #       name: test-go-1-configmap
