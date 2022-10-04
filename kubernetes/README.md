@@ -107,7 +107,7 @@ spec: # service.yaml
 
 - env & volume
 
-```yaml
+```yaml deployment
 spec:
   containers:
     - name: test-pd
@@ -168,6 +168,55 @@ spec:
 
     - name: emptydir-volume
       emptyDir: {}
+```
+
+```yaml persistent volume & persistent volume claim
+# pv & pvc connection
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hostpath-pv
+  labels:
+    type: hostpath
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /Users/test/path
+    type: Directory
+
+--- # with volume name
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  volumeName: hostpath-pv # link with pv name
+--- # with selector
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: hostpath # link with labels
 ```
 
 # script
