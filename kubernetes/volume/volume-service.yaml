@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: volume-service
+  namespace: test
+spec:
+  type: NodePort
+  ports:
+    - port: 9090
+      targetPort: 9090
+      nodePort: 31100
+  selector:
+    app: test-volume

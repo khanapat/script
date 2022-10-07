@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-deployment
+  namespace: test
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: test-volume
+  template:
+    metadata:
+      labels:
+        app: test-volume
+    spec:
+      containers:
+        - name: volume-deployment
+          image: busybox:latest
+          imagePullPolicy: IfNotPresent
+          # command: ["/bin/sh", "-c", "sleep 100"]
+          command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
+          volumeMounts:
+            - name: volume-config-volume
+              mountPath: /app/config
+      volumes:
+        - name: volume-config-volume
+          persistentVolumeClaim:
+            claimName: volume-1-pvc
+
+

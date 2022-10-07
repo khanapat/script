@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-1-pv
+  labels:
+    type: test-volume
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /Users/arise_user/Desktop/script/kubernetes/volume/config # ${PWD}
+    type: Directory
