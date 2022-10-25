@@ -16,14 +16,14 @@ spec:
     spec:
       initContainers:
       - name: init
-        image: busybox:1.28
-        command: ['sh', '-c', 'mkdir /vault/config; mkdir /vault/data']
+        image: busybox:latest
+        command: ['/bin/sh', '-c', 'mkdir -p /vault-trust/config; mkdir -p /vault-trust/data']
         volumeMounts:
         - name: trust-vault-test-data
           mountPath: /vault-trust
       containers:
-      - name: trust-vault-test-deployment
-        image: vault:1.5.5
+      - name: vault
+        image: arm64v8/vault:1.12.0
         resources:
           requests:
             ephemeral-storage: 1G
@@ -36,7 +36,8 @@ spec:
         #    command:
         #     - sh
         #     - -c
-        #     - "vault operator unseal 2fd63155cc77d965a046cb8ceb433bba4d5da8becb5f0f76a49bf429a45e1f8c52 && vault operator unseal 808097073b1e8a76e5cac983e8cf502d5194492a9fccff02af40926ef10f256899"
+        #     - "vault operator unseal 2fd63155cc77d965a046cb8ceb433bba4d5da8becb5f0f76a49bf429a45e1f8c52 &&
+        #       vault operator unseal 808097073b1e8a76e5cac983e8cf502d5194492a9fccff02af40926ef10f256899"
         ports:
         - containerPort: 8200
         securityContext:
@@ -65,5 +66,5 @@ spec:
         # persistentVolumeClaim:
         #   claimName: trust-vault-test-pvc
         hostPath:
-          path: /Users/ktb_user/Desktop/kubernetes/vault/local/
+          path: /Users/arise_user/Desktop/script/kubernetes/vault/local/
 
