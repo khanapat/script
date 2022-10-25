@@ -36,8 +36,8 @@ spec:
         #    command:
         #     - sh
         #     - -c
-        #     - "vault operator unseal 2fd63155cc77d965a046cb8ceb433bba4d5da8becb5f0f76a49bf429a45e1f8c52 &&
-        #       vault operator unseal 808097073b1e8a76e5cac983e8cf502d5194492a9fccff02af40926ef10f256899"
+        #     - "vault operator unseal e2c730d2a5dabb2b655e7ea8ba2b5c20e0cf1438f01af0e747e62d2c0a6ab4c0a3 &&
+        #       vault operator unseal 9081affad72f01b60f31cee287adc03e00c05cb86c3c946dea2f6eef859be7cdce"
         ports:
         - containerPort: 8200
         securityContext:
