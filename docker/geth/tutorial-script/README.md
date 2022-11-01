@@ -46,11 +46,12 @@ bootnode -nodekey boot.key -addr :30305 # run bootnode
 
 geth --datadir ./data/node1 --port 30306 --bootnodes enode://c489b0ffb8e1da3c103e014394d0929bc6ffcc1c98adccaf78576ef9170ac791c3e432de35b43444ab7a14f75d42264e3f81f061d84b28c04febca42cd9c2cff@127.0.0.1:0\?discport\=30305 --networkid 12345 --unlock 0x0a4b986b3723269491faa735cbb2f3e73a044a23 --password ./data/node1/password.txt --mine
 
-geth --datadir ./data/node2 --port 30307 --authrpc.port 8552 --bootnodes enode://c489b0ffb8e1da3c103e014394d0929bc6ffcc1c98adccaf78576ef9170ac791c3e432de35b43444ab7a14f75d42264e3f81f061d84b28c04febca42cd9c2cff@127.0.0.1:0\?discport\=30305 --networkid 12345 --unlock 0x002cd2511396bbb45830d56bc4137134e7392982 --password ./data/node1/password.txt
+geth --datadir ./data/node2 --port 30307 --authrpc.port 8552 --bootnodes enode://c489b0ffb8e1da3c103e014394d0929bc6ffcc1c98adccaf78576ef9170ac791c3e432de35b43444ab7a14f75d42264e3f81f061d84b28c04febca42cd9c2cff@127.0.0.1:0\?discport\=30305 --networkid 12345 --unlock 0x002cd2511396bbb45830d56bc4137134e7392982 --password ./data/node1/password.txt --mine
 
 geth attach ./data/node1/geth.ipc
 geth attach ./data/node2/geth.ipc
 
+personal.unlockAccount(eth.accounts[0])
 eth.accounts
 eth.getBalance("<address>")
 eth.sendTransaction({to: "<address>", from: eth.accounts[0], value: 25000})
