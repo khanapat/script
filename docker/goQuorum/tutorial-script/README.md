@@ -22,7 +22,7 @@ cp artifacts/goQuorum/static-nodes.json artifacts/goQuorum/permissioned-nodes.js
 - istanbul.blockperiod is deprecated
 
 ```bash
-export PATH=/Users/arise_user/Desktop/others/quorum/build/bin:$PATH
+export PATH=/Users/arise_user/Desktop/script/docker/goQuorum/tutorial-script/bin:$PATH
 
 geth --datadir ./Node-0/data init ./genesis.json
 geth --datadir ./Node-1/data init ./genesis.json
