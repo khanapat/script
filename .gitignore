@@ -3,3 +3,4 @@ data
 config
 data-private
 *.key
+bin
