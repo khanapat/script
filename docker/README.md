@@ -32,3 +32,7 @@
    > stored host system's memory only
 
 > P.S. can't mount initial data out of container
+
+# port
+
+> expose port `-p <local port>:<docker port>`
