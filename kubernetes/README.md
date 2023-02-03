@@ -236,6 +236,9 @@ kubectl logs <pod name>
 kubectl create configmap(cm) <map-name> <data-source>
 
 kubectl create secret generic dbsecret --from-literal=username=appdba --from-literal=password=pazzw0rd # --from-file=dbsecret.yaml
+
+echo "Ym9ibw==" | base64 -D # decode base64
+echo "bobo" | base64 # encode base64
 ```
 
 (dbsecret.yaml)
