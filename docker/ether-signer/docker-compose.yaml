@@ -1,0 +1,20 @@
+version: "3.2"
+services:
+    ether-signer:
+        image: consensys/ethsigner:22.1
+        container_name: ether-signer
+        command: file-based-signer # hashicorp-signer (single key) / # multikey-signer (multiple key)
+        environment:
+            - ETHSIGNER_CHAIN_ID=137
+            - ETHSIGNER_DOWNSTREAM_HTTP_HOST=https://polygon-rpc.com
+            - ETHSIGNER_DOWNSTREAM_HTTP_PORT=443
+            - ETHSIGNER_DOWNSTREAM_HTTP_TLS_ENABLED
+            - ETHSIGNER_FILE_BASED_SIGNER_KEY_FILE=/var/lib/keys/keyFile
+            - ETHSIGNER_FILE_BASED_SIGNER_PASSWORD_FILE=/var/lib/keys/passwordFile
+        #     - ETHSIGNER_CONFIG_FILE=/var/lib/ethsigner/config.toml
+        #     - ETHSIGNER_CHAIN_ID=1337
+        volumes:
+            - $PWD/keys:/var/lib/keys
+        #     - $PWD/config:/var/lib/ethsigner
+        ports:
+            - 8545:8545
