@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+    api:
+        image: docker.io/khanapat/repo:1.0.0 # podman login docker.io
+        build: ./
+        ports:
+            - 8000:3000
+        environment:
+            - APP_NAME=API from Compose
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_USERNAME=root
+            - DB_PASSWORD=P@ssw0rd
+            - DB_DATABASE=arise
+        depends_on: # api will wait db starting first
+            - db
+        restart: always
+
+    db:
+        image: mariadb
+        container_name: mariadb
+        ports:
+            - 3306:3306
+        environment:
+            - MARIADB_ROOT_PASSWORD=P@ssw0rd
+            - MARIADB_DATABASE=arise

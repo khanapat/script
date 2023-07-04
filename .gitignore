@@ -4,3 +4,4 @@ config
 data-private
 *.key
 bin
+.vscode

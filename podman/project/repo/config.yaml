@@ -1,0 +1,9 @@
+app:
+    name: Trust API
+
+db:
+    host: db
+    port: 3306
+    username: root
+    password: P@ssw0rd
+    database: arise
