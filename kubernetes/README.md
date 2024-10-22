@@ -1,18 +1,18 @@
-- metadata
-  1. https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
+-   metadata
+    1. https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#ObjectMeta
 
 ```yaml
 metadata:
-  name: test-app # must be unique within a namespace
-  namespace: test # the space
-  labels: # map keys and values that can be used to organize and categorize objects
-    app: test # map[app] = test
+    name: test-app # must be unique within a namespace
+    namespace: test # the space
+    labels: # map keys and values that can be used to organize and categorize objects
+        app: test # map[app] = test
 ```
 
-- selector
-  1. https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-  2. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#writing-a-deployment-spec
-  3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+-   selector
+    1. https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+    2. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#writing-a-deployment-spec
+    3. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
 ```yaml
 spec: # deployment.yaml
@@ -60,25 +60,25 @@ spec: # deployment.yaml
       restartPolicy: OnFailure
 ```
 
-- hostname & hostAliases
-  1. https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#hostname-and-name-resolution
+-   hostname & hostAliases
+    1. https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#hostname-and-name-resolution
 
 ```yaml
 spec:
-  template:
-    spec:
-      hostname: containername # host dns container name
-      hostAliases: # list of hosts and ip will be in pods's hosts file
-        - ip: "10.10.10.10"
-          hostnames:
-            - "arisebyinfinitas"
-        - ip: "10.10.10.11"
-          hostnames:
-            - "cryptobobo"
+    template:
+        spec:
+            hostname: containername # host dns container name
+            hostAliases: # list of hosts and ip will be in pods's hosts file
+                - ip: "10.10.10.10"
+                  hostnames:
+                      - "arisebyinfinitas"
+                - ip: "10.10.10.11"
+                  hostnames:
+                      - "cryptobobo"
 ```
 
-- port
-  1. https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#ports
+-   port
+    1. https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#ports
 
 ```yaml
 spec: # service.yaml
@@ -105,7 +105,35 @@ spec: # service.yaml
       nodePort: 31000 # external port
 ```
 
-- env & volume
+-   probes
+
+1. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+```yaml
+# The kubelet uses liveness probes to know when to restart a container.
+# The kubelet uses readiness probes to know when a container is ready to start accepting traffic.
+spec:
+    containers:
+        livenessProbe:
+            exec:
+                command:
+                    - cat
+                    - /tmp/healthy
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+        livenessProbe:
+            httpGet:
+                path: /healthz
+                port: 8080
+                httpHeaders:
+                    - name: Custom-Header
+                      value: Awesome
+            initialDelaySeconds: 3
+            periodSeconds: 3
+```
+
+-   env & volume
 
 ```yaml deployment
 spec:
@@ -175,48 +203,48 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: hostpath-pv
-  labels:
-    type: hostpath
+    name: hostpath-pv
+    labels:
+        type: hostpath
 spec:
-  storageClassName: hostpath
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: /Users/test/path
-    type: Directory
+    storageClassName: hostpath
+    capacity:
+        storage: 1Gi
+    volumeMode: Filesystem
+    accessModes:
+        - ReadWriteMany
+    hostPath:
+        path: /Users/test/path
+        type: Directory
 
 --- # with volume name
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: hostpath-pvc
+    name: hostpath-pvc
 spec:
-  resources:
-    requests:
-      storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  volumeName: hostpath-pv # link with pv name
+    resources:
+        requests:
+            storage: 1Gi
+    volumeMode: Filesystem
+    accessModes:
+        - ReadWriteMany
+    volumeName: hostpath-pv # link with pv name
 --- # with selector
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: hostpath-pvc
+    name: hostpath-pvc
 spec:
-  resources:
-    requests:
-      storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  selector:
-    matchLabels:
-      type: hostpath # link with labels
+    resources:
+        requests:
+            storage: 1Gi
+    volumeMode: Filesystem
+    accessModes:
+        - ReadWriteMany
+    selector:
+        matchLabels:
+            type: hostpath # link with labels
 ```
 
 # script
@@ -245,6 +273,6 @@ echo "bobo" | base64 # encode base64
 
 ```yaml
 stringData:
-  password: bobo
-  username: admin
+    password: bobo
+    username: admin
 ```
