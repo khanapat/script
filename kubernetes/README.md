@@ -101,7 +101,7 @@ spec: # service.yaml
     - name: name # unique name in pod
       protocal: TCP
       port: 9090 # internal port (service port)
-      targetPort: 9090 # app port
+      targetPort: 9090 # app port (containerPort or portName in deployment)
       nodePort: 31000 # external port
 ```
 
