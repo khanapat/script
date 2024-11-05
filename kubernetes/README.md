@@ -77,6 +77,13 @@ spec:
                       - "cryptobobo"
 ```
 
+-   command & args
+
+| Description                     | Docker field name | Kubernetes field name |
+| ------------------------------- | ----------------- | --------------------- |
+| command run by the container    | `ENTRYPOINT`      | `command`             |
+| arguments passed to the command | `CMD`             | `args`                |
+
 -   port
     1. https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#ports
 
