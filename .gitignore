@@ -5,3 +5,5 @@ data-private
 *.key
 bin
 .vscode
+
+postgres-data
