@@ -1,11 +1,10 @@
-version: "3.9"
-services: 
-  redis:
-    image: redis
-    container_name: redis2
-    ports:
-      - 6379:6379
-    volumes:
-      - ./data/redis:/data
-      - ./config/redis.conf:/redis.conf
-    command: redis-server /redis.conf
+services:
+    redis:
+        image: redis
+        container_name: redis2
+        ports:
+            - 6379:6379
+        volumes:
+            - ./data/redis:/data
+            - ./config/redis.conf:/redis.conf
+        command: redis-server /redis.conf

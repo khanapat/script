@@ -35,7 +35,104 @@
 
 # port
 
+## short syntax
+
 > expose port `-p <local port>:<docker port>`
+
+```yaml
+ports:
+    - 8080:80 # <local port>:<docker port>
+```
+
+## long syntax
+
+```yaml
+services:
+    api:
+        ports:
+            - name: web
+            target: 80 # docker port
+            host_ip: 127.0.0.1
+            published: 8080 # local port
+            protocol: tcp
+            app_protocol: http
+            mode: host
+```
+
+[Reference](https://docs.docker.com/reference/compose-file/services/#ports)
+
+# healthcheck
+
+The healthcheck attribute declares a check that's run to determine whether or not the service containers are "healthy"
+
+```yaml
+services:
+    api:
+        healthcheck:
+            # the first item must be either NONE, CMD or CMD-SHELL (/bin/sh for linux)
+            test: ["CMD", "curl", "-f", "http://localhost"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+            start_interval: 5s
+```
+
+> P.S. interval, timeout, start_period, and start_interval are specified as durations. Introduced in Docker Compose version 2.20.2
+
+[Reference](https://docs.docker.com/reference/compose-file/services/#healthcheck)
+
+# depends_on
+
+With the depends_on attribute, you can control the order of service startup and shutdown. It is useful if services are closely coupled, and the startup sequence impacts the application's functionality.
+
+## short syntax
+
+```yaml
+services:
+    web:
+        build: .
+        # db and redis are created before web
+        # web is removed before db and redis
+        depends_on:
+            - db
+            - redis
+    redis:
+        image: redis
+    db:
+        image: postgres
+```
+
+## long syntax
+
+```yaml
+services:
+    web:
+        build: .
+        depends_on:
+            db:
+                condition: service_healthy # service_started (created), service_healthy (be healthy "healthcheck"), service_completed_successfully (run completion)
+                restart: true # restart after it updates the dependency service
+            redis:
+                condition: service_started
+    redis:
+        image: redis
+    db:
+        image: postgres
+```
+
+# links
+
+links defines a network link to containers in another service. Either specify both the service name and a link alias (SERVICE:ALIAS), or just the service name.
+
+```yaml
+services:
+    web:
+        links:
+            - db
+            - db:database
+            - redis
+```
 
 # dockerfile
 

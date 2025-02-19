@@ -1,4 +1,6 @@
+```sh
 docker run --name postgresql -e POSTGRES_USER=usr -e POSTGRES_PASSWORD=P@ssw0rd -p 5432:5432 -d postgres
+```
 
 ## docker
 
@@ -15,4 +17,10 @@ scripts in `/docker-entrypoint-initdb.d` are only run if you start the container
 ```bash
 # get the default config
 docker run -i --rm postgres:15 cat /usr/share/postgresql/postgresql.conf.sample > my-postgres.conf
+```
+
+## run
+
+```bash
+docker compose -f ./docker-compose.yaml up -d
 ```
