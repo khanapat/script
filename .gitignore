@@ -8,5 +8,7 @@ bin
 
 postgres-data
 blockscout-db-data
+stats-db-data
 redis-data
 logs
+dets

@@ -27,7 +27,7 @@ blockscout-service-up:
 	@echo "***ENV for blockscout-service-up***"
 	@echo "PREFIX_ENV_PATH=$(PREFIX_SERVICES_ENV_PATH)" > .env
 
-	@docker compose -f ./docker-compose-microservices.yaml up -d &> /dev/null
+	@docker compose -f ./docker-compose-microservices.yaml up -d
 
 .PHONY: blockscout-service-down # Stop blockscout with microservices
 blockscout-service-down:

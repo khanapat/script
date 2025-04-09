@@ -24,8 +24,6 @@ services:
         extends:
             file: ./services/backend.yaml
             service: backend
-        volumes:
-            - ./data/genesis.json:/data/genesis.json
         links:
             - db:database
 
@@ -44,7 +42,7 @@ services:
             stats-db-init:
                 condition: service_completed_successfully
         extends:
-            file: ./services/stats.yml
+            file: ./services/stats.yaml
             service: stats-db
 
     stats:
@@ -52,7 +50,7 @@ services:
             - stats-db
             - backend
         extends:
-            file: ./services/stats.yml
+            file: ./services/stats.yaml
             service: stats
 
     frontend:
@@ -68,5 +66,5 @@ services:
             - frontend
             - stats
         extends:
-        file: ./services/nginx.yml
-        service: proxy
+            file: ./services/nginx.yaml
+            service: proxy
