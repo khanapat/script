@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Ethereum",
+        "url": "https://eth.blockscout.com/",
+        "group": "Mainnets",
+        "icon": "https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/ethereum.svg"
+    },
+    {
+        "title": "Arise Mainnet",
+        "url": "https://arise-scan.arise.tech/",
+        "group": "Mainnets",
+        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/arise-network.png"
+    },
+    {
+        "title": "Sepolia",
+        "url": "https://eth-sepolia.blockscout.com/",
+        "group": "Testnets",
+        "icon": "https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/sepolia.png"
+    },
+    {
+        "title": "Arise Testnet",
+        "url": "https://arise-scan-nonprd.arise.tech/",
+        "group": "Testnets",
+        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/arise-network.png"
+    },
+    {
+        "title": "Localhost",
+        "url": "http://localhost",
+        "group": "Other",
+        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/localhost-network.png"
+    }
+]

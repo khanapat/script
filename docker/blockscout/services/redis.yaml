@@ -1,0 +1,7 @@
+services:
+    redis-db:
+        image: redis:alpine
+        container_name: redis-bs
+        command: redis-server
+        volumes:
+            - ./redis-data:/data

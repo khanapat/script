@@ -1,0 +1,72 @@
+services:
+    redis-db:
+        extends:
+            file: ./services/redis.yaml
+            service: redis-db
+
+    db-init:
+        extends:
+            file: ./services/db.yaml
+            service: db-init
+
+    db:
+        depends_on:
+            db-init:
+                condition: service_completed_successfully
+        extends:
+            file: ./services/db.yaml
+            service: db
+
+    backend:
+        depends_on:
+            - db
+            - redis-db
+        extends:
+            file: ./services/backend.yaml
+            service: backend
+        volumes:
+            - ./data/genesis.json:/data/genesis.json
+        links:
+            - db:database
+
+    visualizer:
+        extends:
+            file: ./services/visualizer.yaml
+            service: visualizer
+
+    stats-db-init:
+        extends:
+            file: ./services/stats.yaml
+            service: stats-db-init
+
+    stats-db:
+        depends_on:
+            stats-db-init:
+                condition: service_completed_successfully
+        extends:
+            file: ./services/stats.yml
+            service: stats-db
+
+    stats:
+        depends_on:
+            - stats-db
+            - backend
+        extends:
+            file: ./services/stats.yml
+            service: stats
+
+    frontend:
+        depends_on:
+            - backend
+        extends:
+            file: ./services/frontend.yaml
+            service: frontend
+
+    proxy:
+        depends_on:
+            - backend
+            - frontend
+            - stats
+        extends:
+        file: ./services/nginx.yml
+        service: proxy

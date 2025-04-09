@@ -7,3 +7,6 @@ bin
 .vscode
 
 postgres-data
+blockscout-db-data
+redis-data
+logs
