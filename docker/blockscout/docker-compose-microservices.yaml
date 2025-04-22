@@ -32,6 +32,16 @@ services:
             file: ./services/visualizer.yaml
             service: visualizer
 
+    sig-provider:
+        extends:
+            file: ./services/sig-provider.yaml
+            service: sig-provider
+
+    sc-verifier:
+        extends:
+            file: ./services/smart-contract-verifier.yaml
+            service: smart-contract-verifier
+
     stats-db-init:
         extends:
             file: ./services/stats.yaml

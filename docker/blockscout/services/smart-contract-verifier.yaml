@@ -1,0 +1,11 @@
+services:
+    smart-contract-verifier:
+        image: ghcr.io/blockscout/smart-contract-verifier:v1.9.3
+        pull_policy: always
+        platform: linux/amd64
+        restart: always
+        container_name: smart-contract-verifier
+        env_file:
+            - ../envs/service-smart-contract-verifier.env
+        ports:
+            - 8082:8050

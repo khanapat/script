@@ -70,3 +70,14 @@ mix deps.get
 # generate secret
 mix phx.gen.secret
 ```
+
+## Feature
+
+1. Verify Smart Contract Code
+
+    [Exact vs Partial Match](https://github.com/orgs/blockscout/discussions/10422)
+    [Remix](https://docs.kcc.io/developers/verify-smart-contract/using-remix)
+
+-   Exact Match (Code,Compiler,ABI,ByteCode) : using Standard JSON input
+
+-   Partial Match (Code,ABI,ByteCode) : using Single, Multi file
