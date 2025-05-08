@@ -111,6 +111,8 @@ docker run -i --rm kong/kong-gateway:3.10.0.1 cat /etc/kong/kong.conf.default > 
 
 ```bash
 make kong-db-up
+# or
+make kong-dbless-up
 ```
 
 ### 2. verify kong gateway status
@@ -353,7 +355,7 @@ To list api key for all consumers
 curl -i -X GET http://localhost:8001/key-auths
 ```
 
-To apply key authentication plugin with a
+To apply key authentication plugin with a route
 
 ```bash
 curl -i -X POST http://localhost:8001/routes/my-pokemon-service-route/plugins \
@@ -373,9 +375,15 @@ curl -i -X POST http://localhost:8001/routes/my-pokemon-service-route/plugins \
 To request api with key-auth plugin
 
 ```bash
+# db
 curl -i -X GET http://localhost:8000/api/v2/pokemon?limit=10&offset=0 \
 --header 'Content-Type: application/json' \
 --header 'apikey: password'
+
+# dbless
+curl -i -X GET http://localhost:8000/api/v2/pokemon?limit=10&offset=0 \
+--header 'Content-Type: application/json' \
+--header 'apikey: my-key'
 ```
 
 [Reference](https://docs.konghq.com/hub/kong-inc/key-auth/)
@@ -443,6 +451,14 @@ curl -i -s -X POST http://localhost:8001/services \
 ```
 
 [Reference](https://docs.konghq.com/gateway/3.10.x/production/access-control/start-securely/)
+
+### 8. stop kong using docker
+
+```bash
+make kong-db-up
+# or
+make kong-dbless-down
+```
 
 ## Plugin
 

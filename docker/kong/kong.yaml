@@ -1,0 +1,22 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+    - name: my-pokemon-service
+      url: https://pokeapi.co
+      plugins:
+          - name: key-auth
+      routes:
+          - name: my-pokemon-service-route
+            methods:
+                - GET
+                - POST
+            paths:
+                - /api/v2/pokemon
+                - /api/v2/berry
+            strip_path: false
+
+consumers:
+    - username: my-user
+      keyauth_credentials:
+          - key: my-key

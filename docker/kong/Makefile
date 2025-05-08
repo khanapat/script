@@ -30,3 +30,12 @@ kong-db-up:
 kong-db-down: 
 	@docker compose -f ./docker-compose-kong-db.yaml down
 
+.PHONY: kong-dbless-up # Run kong gateway without database
+kong-dbless-up:
+	@echo "KONG_VERSION=$(KONG_VERSION)" > .env
+
+	@docker compose -f ./docker-compose-kong-dbless.yaml up -d
+
+.PHONY: kong-dbless-down # Stop kong gateway without database
+kong-dbless-down:
+	@docker compose -f ./docker-compose-kong-dbless.yaml down
