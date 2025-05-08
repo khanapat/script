@@ -10,5 +10,6 @@ postgres-data
 blockscout-db-data
 stats-db-data
 redis-data
+kong-db-data
 logs
 dets
