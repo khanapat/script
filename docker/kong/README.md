@@ -185,6 +185,20 @@ Routes define how requests are proxied by Kong Gateway. To create a route associ
 
 Configure a new route on the `/mock` path to direct traffic to the `service` service created earlier
 
+Path can be used regex by starting with `~`
+
+**_example_**
+
+`~/api/v2/[^/]+$` - allow only `/api/v2/:item` wit strict path
+
+`~/api/v2/berry/\\d+$` - allow only `/api/v2/berry/:id` with strict path
+
+$ is strict path
+
+\d+ is only Numeric ID parameter
+
+[^/]+ is only Alphanumeric parameter
+
 ```bash
 curl -i -X POST http://localhost:8001/services/my-pokemon-service/routes \
 --header 'Content-Type: application/json' \
@@ -625,7 +639,7 @@ To test [OAuth2](https://docs.konghq.com/hub/kong-inc/oauth2/)
 # apply plugin
 curl -i -X POST http://localhost:8001/routes/my-pokemon-service-route/plugins \
 --header 'Content-Type: application/json' \
---header 'Kong-Admin-Token: 8FdCSAevQFSaXdrUnFRGUG8KEZBf7N7t' \
+--header 'Kong-Admin-Token: ${KONG_ADMIN_TOKEN}' \
 --data '
     {
         "name": "oauth2",

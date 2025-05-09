@@ -42,7 +42,7 @@ services:
             # KONG_PG_PASSWORD: password
             KONG_PG_PASSWORD_FILE: /run/secrets/db_password
             # to secure the admin API or Kong Manager (default username: kong_admin)
-            KONG_PASSWORD: ${KONG_PASSWORD:-password}
+            # KONG_PASSWORD: ${KONG_PASSWORD:-password}
         command: kong migrations bootstrap
         secrets:
             - db_password
@@ -73,6 +73,10 @@ services:
             KONG_PROXY_ERROR_LOG: /dev/stderr
             # KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
             # KONG_DECLARATIVE_CONFIG: /opt/kong/kong.yaml
+            # to remove secure the admin API or Kong Manager (default username: kong_admin)
+            KONG_ENFORCE_RBAC: off
+            KONG_ADMIN_GUI_AUTH: ""
+            KONG_ADMIN_GUI_SESSION_CONF: ""
         volumes:
             - ./kong.conf:/etc/kong/kong.conf
         ports:
