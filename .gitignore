@@ -5,7 +5,9 @@ data-private
 *.key
 bin
 .vscode
+.DS_Store
 
+mongodb-data
 postgres-data
 blockscout-db-data
 stats-db-data
