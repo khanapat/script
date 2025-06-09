@@ -41,7 +41,7 @@ db.adminCommand( { listDatabases: 1 } )
 db.runCommand( { listCollections: 1, nameOnly: false } )
 
 # insert 
-.editor # open editor to use multi line command
+.editor # open editor to use multi line command (https://www.mongodb.com/docs/mongodb-shell/reference/editor-mode/)
 
 db.myCollection.insertOne( { x: 1 } );
 
