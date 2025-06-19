@@ -1,5 +1,6 @@
 PREFIX_NO_SERVICES_ENV_PATH=no-service
 PREFIX_SERVICES_ENV_PATH=service
+BACKEND_BLOCKSCOUT_VERSION=v7.0.2
 
 .PHONY: help
 help:
@@ -16,7 +17,7 @@ blockscout-no-service-up:
 	@echo "***ENV for blockscout-no-service-up***"
 	@echo "PREFIX_ENV_PATH=$(PREFIX_NO_SERVICES_ENV_PATH)" > .env
 
-	@docker compose -f ./docker-compose-no-services.yaml up -d &> /dev/null
+	@BLOCKSCOUT_VERSION=$(BACKEND_BLOCKSCOUT_VERSION) docker compose -f ./docker-compose-no-services.yaml up -d
 
 .PHONY: blockscout-no-service-down # Stop blockscout without microservices
 blockscout-no-service-down:
@@ -27,7 +28,7 @@ blockscout-service-up:
 	@echo "***ENV for blockscout-service-up***"
 	@echo "PREFIX_ENV_PATH=$(PREFIX_SERVICES_ENV_PATH)" > .env
 
-	@docker compose -f ./docker-compose-microservices.yaml up -d
+	@BLOCKSCOUT_VERSION=$(BACKEND_BLOCKSCOUT_VERSION) docker compose -f ./docker-compose-microservices.yaml up -d
 
 .PHONY: blockscout-service-down # Stop blockscout with microservices
 blockscout-service-down:

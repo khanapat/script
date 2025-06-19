@@ -9,7 +9,7 @@
         "title": "Arise Mainnet",
         "url": "https://arise-scan.arise.tech/",
         "group": "Mainnets",
-        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/arise-network.png"
+        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/logo_light_short.svg"
     },
     {
         "title": "Sepolia",
@@ -21,7 +21,7 @@
         "title": "Arise Testnet",
         "url": "https://arise-scan-nonprd.arise.tech/",
         "group": "Testnets",
-        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/arise-network.png"
+        "icon": "https://aster-asset-nonprd.arisetech.dev/main/blockscout/logo_light_short.svg"
     },
     {
         "title": "Localhost",
