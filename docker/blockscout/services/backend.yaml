@@ -1,6 +1,6 @@
 services:
     backend:
-        image: blockscout/blockscout:7.0.2
+        image: ghcr.io/blockscout/blockscout:8.1.1
         pull_policy: always
         restart: always
         stop_grace_period: 5m

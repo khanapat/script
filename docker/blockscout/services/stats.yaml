@@ -33,7 +33,7 @@ services:
             start_period: 10s
 
     stats:
-        image: ghcr.io/blockscout/stats:v2.6.1
+        image: ghcr.io/blockscout/stats:v2.9.2
         pull_policy: always
         platform: linux/amd64
         restart: always

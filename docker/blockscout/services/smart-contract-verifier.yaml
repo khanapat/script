@@ -1,6 +1,6 @@
 services:
     smart-contract-verifier:
-        image: ghcr.io/blockscout/smart-contract-verifier:v1.9.3
+        image: ghcr.io/blockscout/smart-contract-verifier:v1.10.0
         pull_policy: always
         platform: linux/amd64
         restart: always
