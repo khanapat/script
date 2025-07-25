@@ -1,0 +1,196 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: k6-configmap
+    namespace: arisepreq
+    labels:
+        app: k6
+data:
+    01-api-apply-loans.test.js: |+
+        import http from "k6/http";
+        import { check } from "k6";
+
+        const BASE_URL = __ENV.BASE_URL || 'http://localhost:30090';
+
+        export const options = {
+          stages: [
+            { duration: "10s", target: 5 },
+            { duration: "20s", target: 10 },
+            { duration: "10s", target: 0 },
+          ],
+          thresholds: {
+            http_req_duration: ["p(95)<1000"],
+            http_req_failed: ["rate<0.05"],
+          },
+        };
+
+        // Ping test function
+        function pingTest() {
+          console.log("Starting ping tests...");
+          for (let i = 1; i <= 3; i++) {
+            const pingRes = http.get(BASE_URL);
+            console.log(`Ping ${i}: ${pingRes.status} - ${pingRes.timings.duration}ms`);
+            check(pingRes, {
+              [`ping ${i} successful`]: (r) => r.status === 200 || r.status === 404,
+            });
+          }
+        }
+
+        // Simple UUID generator
+        function generateUUID() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+
+        // Random integer generator
+        function randomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Test data pool
+        const TEST_DATA_POOL_SIZE = 100;
+        const testDataPool = Array(TEST_DATA_POOL_SIZE)
+          .fill()
+          .map((_, i) => {
+            const suiteId = generateUUID();
+            return {
+              fullName: `${suiteId}-User-${i}`,
+              monthlyIncome: randomInt(10000, 100000),
+              loanAmount: randomInt(50000, 500000),
+              loanPurpose: ["education", "home", "car", "personal"][
+                randomInt(0, 3)
+              ],
+              age: randomInt(20, 60),
+              phoneNumber: `08${randomInt(10000000, 99999999)}`,
+              email: `user${i}@example.com`,
+            };
+          });
+
+        export function setup() {
+          pingTest();
+        }
+
+        export default function () {
+          const payload = testDataPool[randomInt(0, TEST_DATA_POOL_SIZE - 1)];
+          
+          payload.creditScore = randomInt(300, 850);
+          payload.employmentYears = randomInt(0, 30);
+
+          const headers = {
+            "Content-Type": "application/json",
+            Connection: "keep-alive",
+            "X-Request-ID": generateUUID(),
+          };
+
+          const res = http.post(BASE_URL + "/api/v1/loans", JSON.stringify(payload), {
+            headers,
+          });
+
+          check(res, {
+            "status is 200": (r) => r.status === 200,
+            "response time < 500ms": (r) => r.timings.duration < 500,
+            "response time < 1s": (r) => r.timings.duration < 1000,
+          });
+
+          if (res.timings.duration > 2000) {
+            console.warn(`⚠️ Slow response detected: ${res.timings.duration}ms`);
+          }
+        }
+
+
+    02-api-get-loans.test.js: |+
+        import http from 'k6/http';
+        import { check } from 'k6';
+        import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
+
+        // Load test for GET /api/v1/loans endpoint with pagination and filtering
+        export const options = {
+            stages: [
+                { duration: '30s', target: 100 },  // Ramp up to 2000 VUs over 30 seconds
+              ],
+              thresholds: {
+                http_req_duration: ['p(90)<400', 'p(95)<600', 'p(99)<1000'],  // 95% of requests under 500ms, 99% under 1s
+                http_req_failed: ['rate<0.01'],                  // Less than 1% failure rate or negotiate with your opponent team
+              },
+        };
+
+        const BASE_URL = __ENV.BASE_URL || 'http://localhost:30090';
+
+        // Define test variations for pagination and filtering
+        const paginationVariations = [
+            { page: 1, limit: 10 },
+            { page: 2, limit: 10 },
+            { page: 1, limit: 20 },
+            { page: 1, limit: 50 },
+            { page: 3, limit: 15 },
+        ];
+
+        const filteringVariations = [
+            { eligible: 'true' },
+            { eligible: 'false' },
+            { purpose: 'education' },
+            { purpose: 'home' },
+            { purpose: 'car' },
+            { purpose: 'personal' },
+            { eligible: 'true', purpose: 'education' },
+            { eligible: 'false', purpose: 'business' },
+        ];
+
+        export default function () {
+            // Determine which scenario is running based on the scenario tag
+            const scenarioTag = __ENV.SCENARIO || '';
+
+            let params = {};
+            let queryString = '';
+
+            if (scenarioTag.includes('pagination') || scenarioTag === '') {
+                // For pagination test or default, use pagination variations
+                const paginationVar = paginationVariations[randomIntBetween(0, paginationVariations.length - 1)];
+                params = { ...paginationVar };
+            } else if (scenarioTag.includes('filtering')) {
+                // For filtering test, use filtering variations
+                const filterVar = filteringVariations[randomIntBetween(0, filteringVariations.length - 1)];
+                const paginationVar = paginationVariations[randomIntBetween(0, paginationVariations.length - 1)];
+                params = { ...paginationVar, ...filterVar };
+            } else {
+                // For high load test, use random combinations
+                const paginationVar = paginationVariations[randomIntBetween(0, paginationVariations.length - 1)];
+
+                // 50% chance to add filtering
+                if (Math.random() > 0.5) {
+                    const filterVar = filteringVariations[randomIntBetween(0, filteringVariations.length - 1)];
+                    params = { ...paginationVar, ...filterVar };
+                } else {
+                    params = { ...paginationVar };
+                }
+            }
+
+            // Build query string from params
+            queryString = Object.keys(params)
+                .map(key => `${key}=${params[key]}`)
+                .join('&');
+
+            const url = `${BASE_URL}/api/v1/loans?${queryString}`;
+
+            const headers = {
+                'Accept': 'application/json',
+                'Connection': 'keep-alive',
+            };
+
+            // Send the GET request
+            const res = http.get(url, { headers });
+
+            // Check response
+            check(res, {
+                'status is 200': (r) => r.status === 200,
+                'response time < 500ms': (r) => r.timings.duration < 500,
+                'response time < 1s': (r) => r.timings.duration < 1000,
+            });
+
+            // Log slow responses for analysis
+            if (res.timings.duration > 1000) {
+                console.warn(`⚠️ Slow response (${res.timings.duration}ms) for: ${url}`);
+            }
+        }

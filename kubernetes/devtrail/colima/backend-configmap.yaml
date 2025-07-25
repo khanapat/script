@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmap
+  namespace: arisepreq
+  labels:
+    app: backend
+data:
+  SERVER_PORT: "9090"
+  SERVER_CONTEXT: "/api"
+  SERVER_ALLOW_ORIGIN: "*"
+  GIN_MODE: "release"
+  LOG_LEVEL: "INFO"
+  POSTGRES_TIMEOUT: "10s"
+  REF_ID_HEADER_KEY: "ref-id"

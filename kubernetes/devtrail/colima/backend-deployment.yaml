@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: arisepreq
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: team007-backend:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9090
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 9090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 9090
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: SERVER_PORT
+            - name: SERVER_CONTEXT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: SERVER_CONTEXT
+            - name: SERVER_ALLOW_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: SERVER_ALLOW_ORIGIN
+            - name: GIN_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: GIN_MODE
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: LOG_LEVEL
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: arisepreq-secret
+                  key: postgres_url
+            - name: POSTGRES_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: POSTGRES_TIMEOUT
+            - name: REF_ID_HEADER_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: REF_ID_HEADER_KEY

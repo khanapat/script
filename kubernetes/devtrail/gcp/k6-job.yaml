@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: k6-job
+    namespace: arisepreq
+    labels:
+        app: k6
+spec:
+    completions: 20 # Total jobs to complete
+    parallelism: 20 # How many to run in parallel
+    backoffLimit: 20 # No retries on failure
+    template:
+        metadata:
+            labels:
+                app: k6
+        spec:
+            tolerations:
+                - key: "k6-loadtest"
+                  operator: "Equal"
+                  value: "true"
+                  effect: "NoSchedule"
+            restartPolicy: Never
+            containers:
+                - name: k6-job
+                  image: grafana/k6:latest
+                  imagePullPolicy: Always
+                  command:
+                      [
+                          "k6",
+                          "run",
+                          "/challenge/k6/01-api-apply-loans.test.js",
+                          "--env",
+                          "BASE_URL=$(BASE_URL)",
+                          "--vus",
+                          "500",
+                          "--duration",
+                          "5m",
+                      ]
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "200m"
+                      limits:
+                          memory: "512Mi"
+                          cpu: "500m"
+                  env:
+                      - name: BASE_URL
+                        value: http://34.143.237.220:9090
+                  volumeMounts:
+                      - name: k6-script-volume
+                        mountPath: /challenge/k6
+            volumes:
+                - name: k6-script-volume
+                  configMap:
+                      name: k6-configmap

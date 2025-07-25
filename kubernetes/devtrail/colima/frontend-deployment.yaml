@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: frontend-deployment
+    namespace: arisepreq
+    labels:
+        app: frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+        spec:
+            containers:
+                - name: frontend
+                  image: team007-frontend:1.0.0
+                  imagePullPolicy: Never
+                  ports:
+                      - containerPort: 3000
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "250m"
+                      limits:
+                          memory: "512Mi"
+                          cpu: "500m"
+                  env:
+                      - name: NODE_ENV
+                        value: "production"
+                      - name: NEXT_PUBLIC_BACKEND_URL
+                        value: "http://backend-service.arisepreq.svc.cluster.local:9090"
+                      - name: NEXT_PUBLIC_BACKEND_PORT
+                        value: "9090"
+                      - name: NEXT_PUBLIC_FRONTEND_URL
+                        value: "http://localhost:3000"
+                      - name: NEXT_PUBLIC_FRONTEND_PORT
+                        value: "3000"
+                      - name: BACKEND_API_URL
+                        value: "http://backend-service.arisepreq.svc.cluster.local:9090"

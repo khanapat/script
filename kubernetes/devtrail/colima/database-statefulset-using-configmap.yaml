@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-statefulset
+  namespace: arisepreq
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5432
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5432
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: TZ
+              value: Asia/Bangkok
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: arisepreq-secret
+                  key: postgres_name
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: arisepreq-secret
+                  key: postgres_username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: arisepreq-secret
+                  key: postgres_password
+          volumeMounts:
+            - name: postgres-init-volume
+              mountPath: /docker-entrypoint-initdb.d
+            - name: postgres-data-volume
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-init-volume
+          configMap:
+            name: postgres-configmap
+        - name: postgres-data-volume
+          persistentVolumeClaim:
+            claimName: postgres-pvc

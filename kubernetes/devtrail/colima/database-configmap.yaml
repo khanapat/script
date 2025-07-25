@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+  namespace: arisepreq
+  labels:
+    app: postgres
+data:
+  01-loan-applications.sql: |+
+    CREATE TABLE public.loan_applications(
+        application_id uuid NOT NULL,
+        full_name varchar(255) NOT NULL,
+        monthly_income int4 NOT NULL,
+        loan_amount int4 NOT NULL,
+        loan_purpose varchar(255) NOT NULL,
+        age int4 NOT NULL,
+        phone_number varchar(10) NOT NULL,
+        email varchar(255) NOT NULL,
+        eligible boolean NOT NULL,
+        reason varchar(255) NOT NULL,
+        created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        CONSTRAINT application_id_pkey PRIMARY KEY (application_id)
+    );
+
+    CREATE INDEX loan_purpose_idx ON public.loan_applications USING btree(loan_purpose);
+
+    INSERT INTO public.loan_applications(application_id, full_name, monthly_income, loan_amount, loan_purpose, age, phone_number, email, eligible, reason, created_at)
+        VALUES ('cbc78c8e-ec3c-4c9c-a602-2c24c6ad6afd', 'Alice Johnson', 15000, 120000, 'home', 35, '0812345678', 'alice.johnson@example.com', TRUE, 'Eligible under base rules', '2025-07-10T19:34:56+07:00'),
+    ('5f7c66b5-7733-40af-a5cf-e4cf7713b791', 'Bob Smith', 12000, 100000, 'education', 28, '0898765432', 'bob.smith@example.com', TRUE, 'Eligible under base rules', '2025-04-03T08:20:07+07:00'),
+    ('efeecae0-f0cc-46fa-8ad2-f746631462e3', 'Henry Adams', 17000, 140000, 'personal', 56, '0821098765', 'henry.adams@example.com', TRUE, 'Eligible under base rules', '2024-12-15T10:50:41+07:00'),
+    ('d995265a-6276-4b99-b3f8-cd62e99ebc77', 'Frank White', 35000, 300000, 'car', 39, '0843210987', 'frank.white@example.com', TRUE, 'Eligible under base rules', '2025-07-01T09:35:52+07:00'),
+    ('c55186a0-8f57-48c2-909e-3ebf801818ea', 'Ivy Wilson', 20000, 200000, 'home', 47, '0810987654', 'ivy.wilson@example.com', TRUE, 'Eligible under base rules', '2025-06-24T22:10:12+07:00'),
+    ('5ff40d71-61c9-4e3a-b68b-03a9acbddff5', 'Laura Rody', 9000, 10000, 'education', 21, '0801111222', 'laura.business@example.com', FALSE, 'Monthly income is insufficient', '2025-07-19T14:24:10+07:00'),
+    ('5ea65096-3fee-4c16-95e5-37df7c1cd174', 'David Kim', 10100, 100000, 'personal', 18, '0865432109', 'david.kim@example.com', FALSE, 'Age not in range (must be between 20-60)', '2025-05-14T12:22:37+07:00'),
+    ('464cc418-874c-40b4-b398-0e6930c84a65', 'Eva Green', 18000, 150000, 'home', 61, '0854321098', 'eva.green@example.com', FALSE, 'Age not in range (must be between 20-60)', '2025-01-02T09:49:11+07:00'),
+    ('6550ddec-5f67-4399-b8a0-4fd0ba36c186', 'Mark Bonad', 40000, 200000, 'business', 32, '0803333444', 'mark.business@example.com', FALSE, 'Business loans not supported', '2025-02-09T10:04:03+07:00'),
+    ('0e6a0a46-fa0c-4a08-a8e5-4bb41b75aa32', 'Grace Brown', 12000, 180000, 'car', 40, '0832109876', 'grace.brown@example.com', FALSE, 'Loan amount cannot exceed 12 months of income', '2025-07-11T16:25:54+07:00');

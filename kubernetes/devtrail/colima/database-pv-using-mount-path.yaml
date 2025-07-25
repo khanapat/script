@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath: # absolute path to the host directory
+    path: /Users/ar657064/Desktop/go/arise.tech/learn/devtrail/team007/scripts/database/docker-entrypoint-initdb.d

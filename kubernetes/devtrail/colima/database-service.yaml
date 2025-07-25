@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: arisepreq
+  labels:
+    app: postgres
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 30050
+  selector:
+    app: postgres
